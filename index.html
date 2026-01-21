@@ -14,6 +14,7 @@
             --glass-border: rgba(255, 255, 255, 0.5);
             --shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
             --text-main: #1d1d1f;
+            --success: #27ae60;
             --blur: 15px;
         }
 
@@ -26,7 +27,7 @@
             min-height: 100vh;
         }
 
-        /* Fundo Dinâmico para destacar o vidro */
+        /* Fundo Dinâmico */
         .bg-gradient {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -59,9 +60,24 @@
         header { padding: 30px 0; display: flex; justify-content: space-between; align-items: center; }
         .logo { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.5px; }
 
+        /* --- ÁREA DE SUCESSO (PÓS-PAGAMENTO) --- */
+        #success-area {
+            display: none; /* Escondido por padrão */
+            padding: 40px;
+            margin-bottom: 30px;
+            border: 2px solid var(--success);
+            text-align: center;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         /* --- HERO --- */
-        .hero { text-align: center; padding: 80px 20px; margin-bottom: 50px; }
-        .hero h1 { font-size: 3.5rem; font-weight: 800; margin-bottom: 15px; letter-spacing: -2px; }
+        .hero { text-align: center; padding: 60px 20px; margin-bottom: 50px; }
+        .hero h1 { font-size: 3rem; font-weight: 800; margin-bottom: 15px; letter-spacing: -2px; }
 
         /* --- EMBED --- */
         .video-container { padding: 20px; margin-bottom: 80px; }
@@ -83,7 +99,7 @@
 
         .price { font-size: 1.8rem; font-weight: 700; margin: 20px 0; display: block; }
 
-        /* --- BOTÃO --- */
+        /* --- BOTÕES --- */
         .btn-buy {
             display: block;
             background: var(--primary);
@@ -93,19 +109,23 @@
             border-radius: 12px;
             text-decoration: none;
             font-weight: 600;
-            transition: opacity 0.2s;
+            transition: 0.3s;
+            border: none;
+            cursor: pointer;
         }
-        .btn-buy:hover { opacity: 0.9; }
+        .btn-buy:hover { opacity: 0.8; transform: translateY(-2px); }
+
+        .btn-success { background: var(--success); margin-top: 20px; display: inline-block; padding: 12px 40px; }
 
         /* --- FUNDADOR --- */
         .founder-card { display: flex; align-items: center; gap: 30px; padding: 40px; margin-bottom: 100px; flex-wrap: wrap; }
-        .founder-img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; }
+        .founder-img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid white; }
         .founder-text { flex: 1; min-width: 250px; }
 
         footer { text-align: center; padding-bottom: 50px; color: var(--accent); font-size: 0.9rem; }
 
         @media (max-width: 600px) {
-            .hero h1 { font-size: 2.5rem; }
+            .hero h1 { font-size: 2.2rem; }
             .founder-card { text-align: center; justify-content: center; }
         }
     </style>
@@ -120,6 +140,12 @@
         <header>
             <div class="logo">e-shop</div>
         </header>
+
+        <div id="success-area" class="glass">
+            <h2 style="color: var(--success);">💳 Pagamento Confirmado!</h2>
+            <p>O seu acesso foi liberado com sucesso. Clique abaixo para baixar:</p>
+            <a href="#" id="download-link" class="btn-buy btn-success">BAIXAR MEU EBOOK (PDF)</a>
+        </div>
 
         <section class="hero glass">
             <h1>Conhecimento em sua melhor forma.</h1>
@@ -140,75 +166,94 @@
         <section class="founder-card glass">
             <img src="" id="founder-photo" class="founder-img" alt="Fundador">
             <div class="founder-text">
-                <h3 id="founder-name">Nome do Fundador</h3>
+                <h3 id="founder-name">Carregando...</h3>
                 <p id="founder-bio" style="margin-top: 10px; color: #444;"></p>
             </div>
         </section>
 
         <footer>
-            <p>&copy; 2024 e-shop - Todos os direitos reservados.</p>
+            <p>&copy; 2024 e-shop - Design & Conteúdo Premium.</p>
         </footer>
     </div>
 
     <script>
-        /* =========================================
-           CONFIGURAÇÃO DO SITE (Mude aqui)
-           =========================================
-        */
+        /* ============================================================
+           [ ÁREA DE CONFIGURAÇÃO ] - Edite apenas os valores abaixo
+           ============================================================ */
         const CONFIG = {
             videoId: "M7lc1UVf-VE", // ID do vídeo do YouTube
+            linkDownloadGeral: "https://link-do-seu-arquivo-pdf.com/ebook.pdf", // Link para baixar após pagar
+            
             fundador: {
-                nome: "Kaique Gonçalves",
-                bio: "Especialista em produtos digitais, focado em entregar conteúdo de alta qualidade com uma experiência visual única.",
-                foto: "https://placehold.co/200x200/2d3436/ffffff?text=kaique"
+                nome: "kaique Gonçalves",
+                bio: "Especialista em produtos digitais focado em transformar conhecimento em experiências visuais incríveis.",
+                foto: "https://placehold.co/200x200/1a1a1a/ffffff?text=Kaique"
             },
+
             produtos: [
                 {
                     nome: "Mastering Design",
                     desc: "O guia definitivo para criar interfaces profissionais.",
-                    preco: "R$ 29,90",
-                    linkPagamento: "https://nubank.com.br/cobrar/1l85wg/69714513-8fc2-4839-a377-abe6a5fe6390"
+                    preco: "R$ 19,90",
+                    linkPagamento: "https://nubank.com.br/cobrar/1l85wg/69714e7d-34ea-41bc-8e57-e184679b4a06" 
                 },
                 {
                     nome: "Código Limpo 2.0",
-                    desc: "Leve sua programação para o próximo nível.",
-                    preco: "R$ 29,90",
-                    linkPagamento: "https://nubank.com.br/cobrar/1l85wg/69714513-8fc2-4839-a377-abe6a5fe6390"
+                    desc: "Leve sua programação para o próximo nível hoje.",
+                    preco: "R$ 19,90",
+                    linkPagamento: "https://nubank.com.br/cobrar/1l85wg/69714e7d-34ea-41bc-8e57-e184679b4a06"
                 }
             ]
         };
 
-        /* =========================================
-           LÓGICA DE INICIALIZAÇÃO
-           =========================================
-        */
+        /* ============================================================
+           [ LÓGICA DO SISTEMA ]
+           ============================================================ */
+        
         function init() {
-            // Configurar Vídeo
-            document.getElementById('main-video').src = `https://www.youtube.com/embed/${CONFIG.videoId}`;
-            
-            // Configurar Fundador
+            // 1. Configurar Vídeo e Fundador
+            document.getElementById('main-video').src = `https://www.youtube.com/embed/${CONFIG.videoId}?rel=0`;
             document.getElementById('founder-name').innerText = CONFIG.fundador.nome;
             document.getElementById('founder-bio').innerText = CONFIG.fundador.bio;
             document.getElementById('founder-photo').src = CONFIG.fundador.foto;
 
-            // Renderizar Produtos
+            // 2. Renderizar Produtos
             const list = document.getElementById('products-list');
+            list.innerHTML = ""; // Limpa a lista antes de renderizar
+            
             CONFIG.produtos.forEach(p => {
                 list.innerHTML += `
                     <div class="product-card glass">
                         <div>
                             <h3>${p.nome}</h3>
-                            <p style="color: #666; margin-top: 10px;">${p.desc}</p>
+                            <p style="color: #666; margin-top: 10px; font-size: 0.9rem;">${p.desc}</p>
                         </div>
                         <div>
                             <span class="price">${p.preco}</span>
-                            <a href="${p.linkPagamento}" target="_blank" class="btn-buy">Comprar Agora</a>
+                            <a href="${p.linkPagamento}" class="btn-buy">Comprar Agora</a>
                         </div>
                     </div>
                 `;
             });
+
+            // 3. Verificar se o cliente voltou do pagamento com sucesso
+            checkPaymentSuccess();
         }
 
+        function checkPaymentSuccess() {
+            const urlParams = new URLSearchParams(window.location.search);
+            // Se a URL terminar em ?sucesso=true
+            if (urlParams.get('sucesso') === 'true') {
+                const areaSucesso = document.getElementById('success-area');
+                areaSucesso.style.display = 'block';
+                document.getElementById('download-link').href = CONFIG.linkDownloadGeral;
+                
+                // Rola para a mensagem de sucesso
+                areaSucesso.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Inicia tudo ao carregar a página
         window.onload = init;
     </script>
 </body>
