@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-shop Mobile - Nike Style</title>
+    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- CONFIGURAÇÕES GERAIS --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #111111;
+        }
+
+        /* --- 1. BARRA DE STATUS ANDROID (Simulada) --- */
+        .android-status-bar {
+            background-color: #000000;
+            color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 20px;
+            font-size: 13px;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .status-icons {
+            display: flex;
+            align-items: center;
+        }
+
+        .status-icons .material-icons-outlined {
+            font-size: 16px;
+            margin-left: 6px;
+        }
+
+        /* --- 2. BARRA DE NAVEGAÇÃO --- */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            background-color: #ffffff;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .logo {
+            font-weight: 900;
+            font-size: 26px;
+            letter-spacing: -1.5px;
+            font-style: italic;
+        }
+
+        .nav-icons {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-icons span {
+            margin-left: 18px;
+            font-size: 26px;
+            cursor: pointer;
+            color: #111;
+        }
+
+        /* --- 3. CAMPO DE BUSCA --- */
+        .search-container {
+            padding: 0 20px 20px 20px;
+        }
+
+        .search-box {
+            background-color: #f2f2f2;
+            border-radius: 50px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-icon {
+            color: #111;
+            font-size: 22px;
+        }
+
+        .search-box input {
+            border: none;
+            background: transparent;
+            margin-left: 10px;
+            outline: none;
+            width: 100%;
+            font-weight: 600;
+            font-size: 15px;
+            color: #111;
+        }
+
+        .search-box input::placeholder {
+            color: #888;
+        }
+
+        /* --- 4. BANNER CATEGORIA --- */
+        .category-banner {
+            background-color: #f7f7f7;
+            padding: 18px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            border-top: 1px solid #e5e5e5;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .arrow {
+            color: #888;
+            font-size: 24px;
+        }
+
+        .banner-text h2 {
+            font-size: 13px;
+            font-weight: 800;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .banner-text p {
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* --- 5. SECÇÃO DE VÍDEO (HERO) --- */
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            height: 65vh; /* Altura do destaque */
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        .video-wrapper video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* Filtro para garantir o tom azulado/cinematográfico */
+            filter: contrast(1.1) brightness(0.9); 
+        }
+
+        /* Overlay Gradiente */
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* O gradiente cria a iluminação dramática */
+            background: linear-gradient(to bottom, rgba(10,20,40,0.3) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0.9) 100%);
+            pointer-events: none;
+        }
+
+        /* Botão Play */
+        .play-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255,255,255,0.9);
+            border-radius: 50%;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            cursor: pointer;
+            backdrop-filter: blur(8px);
+            transition: transform 0.2s ease;
+        }
+
+        .play-btn:active {
+            transform: translate(-50%, -50%) scale(0.95);
+        }
+
+        .play-btn span {
+            font-size: 36px;
+        }
+
+        /* Controles do Vídeo */
+        .video-controls {
+            position: absolute;
+            bottom: 25px;
+            left: 20px;
+            right: 20px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 2;
+        }
+
+        .time-display {
+            font-size: 12px;
+            font-weight: 600;
+            font-family: monospace;
+            min-width: 80px;
+        }
+
+        .progress-bar {
+            flex-grow: 1;
+            height: 3px;
+            background-color: rgba(255,255,255,0.3);
+            border-radius: 2px;
+        }
+
+        .progress-fill {
+            width: 35%; /* Simula o progresso */
+            height: 100%;
+            background-color: #fff;
+            border-radius: 2px;
+            position: relative;
+        }
+        
+        /* Bolinha na barra de progresso */
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            right: -4px;
+            top: -3px;
+            width: 9px;
+            height: 9px;
+            background-color: white;
+            border-radius: 50%;
+        }
+
+        .control-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        /* --- 6. TEXTO PROMOCIONAL --- */
+        .promo-text {
+            padding: 30px 20px 50px 20px;
+            text-align: left;
+        }
+
+        .promo-text h3 {
+            font-size: 18px;
+            font-weight: 500;
+            color: #111;
+            margin-bottom: 0px;
+        }
+
+        .promo-text h1 {
+            font-size: 52px;
+            font-weight: 900;
+            line-height: 0.9;
+            text-transform: uppercase;
+            margin-bottom: 25px;
+            letter-spacing: -2px;
+        }
+
+        .cta-button {
+            background-color: #000;
+            color: #fff;
+            border: none;
+            padding: 18px 30px;
+            font-weight: 700;
+            border-radius: 50px;
+            width: 100%;
+            font-size: 16px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background-color 0.3s;
+        }
+
+        .cta-button:hover {
+            background-color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="android-status-bar">
+        <span class="time">12:30</span>
+        <div class="status-icons">
+            <span class="material-icons-outlined">wifi</span>
+            <span class="material-icons-outlined">signal_cellular_alt</span>
+            <span class="material-icons-outlined">battery_full</span>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <div class="logo">NIKE</div>
+        <div class="nav-icons">
+            <span class="material-icons-outlined">favorite_border</span>
+            <span class="material-icons-outlined">shopping_bag</span>
+            <span class="material-icons-outlined">menu</span>
+        </div>
+    </nav>
+
+    <div class="search-container">
+        <div class="search-box">
+            <span class="material-icons-outlined search-icon">search</span>
+            <input type="text" placeholder="Buscar">
+        </div>
+    </div>
+
+    <section class="category-banner">
+        <span class="material-icons-outlined arrow">chevron_left</span>
+        <div class="banner-text">
+            <h2>TÊNIS DE CORRIDA</h2>
+            <p>Encontre o seu tênis ideal. <strong>Saiba Mais</strong></p>
+        </div>
+        <span class="material-icons-outlined arrow">chevron_right</span>
+    </section>
+
+    <main class="hero-video-section">
+        <div class="video-wrapper">
+            <video poster="https://images.unsplash.com/photo-1571607686566-3d2345e656d7?q=80&w=1287&auto=format&fit=crop" loop muted playsinline>
+                <source src="#" type="video/mp4">
+            </video>
+            
+            <div class="video-overlay"></div>
+
+            <button class="play-btn">
+                <span class="material-icons-outlined">play_arrow</span>
+            </button>
+
+            <div class="video-controls">
+                <div class="time-display">0:12 / 0:30</div>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <div class="control-icons">
+                    <span class="material-icons-outlined">volume_up</span>
+                    <span class="material-icons-outlined">fullscreen</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="promo-text">
+            <h3>Nova camisa do</h3>
+            <h1>VASCO</h1>
+            <button class="cta-button">COMPRAR AGORA</button>
+        </div>
+    </main>
+
+</body>
+</html>
