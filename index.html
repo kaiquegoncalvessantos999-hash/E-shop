@@ -5,445 +5,211 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>e-shop | Ebooks Premium</title>
     <style>
-        /* --- CONFIGURAÇÕES VISUAIS E VARIÁVEIS --- */
+        /* --- CONFIGURAÇÕES VISUAIS --- */
         :root {
-            --bg-body: #f0f2f5;
-            --primary: #2d3436; /* Cinza escuro "vibrante" */
-            --accent: #636e72;   /* Cinza médio */
-            --glass-bg: rgba(255, 255, 255, 0.65);
-            --glass-border: rgba(255, 255, 255, 0.4);
-            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-            --text-main: #2d3436;
-            --text-light: #636e72;
-            --blur-strength: 12px;
+            --bg-body: #f5f6f7;
+            --primary: #1a1a1a; 
+            --accent: #8e8e93;   
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            --text-main: #1d1d1f;
+            --blur: 15px;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
 
         body {
             background-color: var(--bg-body);
-            background-image: 
-                radial-gradient(at 0% 0%, hsla(253,16%,7%,0) 0, hsla(253,16%,7%,0) 50%), 
-                radial-gradient(at 50% 0%, hsla(225,39%,30%,0.1) 0, hsla(225,39%,30%,0) 50%), 
-                radial-gradient(at 100% 0%, hsla(339,49%,30%,0.1) 0, hsla(339,49%,30%,0) 50%);
             color: var(--text-main);
-            line-height: 1.6;
             overflow-x: hidden;
+            min-height: 100vh;
         }
 
-        /* Formas decorativas no fundo para realçar o vidro */
-        .blob {
+        /* Fundo Dinâmico para destacar o vidro */
+        .bg-gradient {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 10% 20%, #e0e0e0 0%, #f5f6f7 100%);
+            z-index: -2;
+        }
+
+        .decorative-shape {
             position: absolute;
-            filter: blur(80px);
+            width: 400px; height: 400px;
+            background: #d1d1d6;
+            filter: blur(100px);
+            border-radius: 50%;
             z-index: -1;
-            opacity: 0.6;
+            opacity: 0.5;
         }
-        .blob-1 { top: 10%; left: 10%; width: 300px; height: 300px; background: #dfe6e9; border-radius: 50%; }
-        .blob-2 { bottom: 20%; right: 10%; width: 400px; height: 400px; background: #b2bec3; border-radius: 40%; }
 
-        /* --- ESTILO VIDRO (GLASSMORPHISM) --- */
+        /* --- ESTILO VIDRO --- */
         .glass {
             background: var(--glass-bg);
-            backdrop-filter: blur(var(--blur-strength));
-            -webkit-backdrop-filter: blur(var(--blur-strength));
+            backdrop-filter: blur(var(--blur));
+            -webkit-backdrop-filter: blur(var(--blur));
             border: 1px solid var(--glass-border);
-            border-radius: 16px;
+            border-radius: 20px;
             box-shadow: var(--shadow);
         }
 
-        /* --- LAYOUT --- */
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
 
-        header {
-            padding: 20px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-        }
+        header { padding: 30px 0; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.5px; }
 
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--primary);
-            letter-spacing: -1px;
-        }
+        /* --- HERO --- */
+        .hero { text-align: center; padding: 80px 20px; margin-bottom: 50px; }
+        .hero h1 { font-size: 3.5rem; font-weight: 800; margin-bottom: 15px; letter-spacing: -2px; }
 
-        /* --- HERO SECTION --- */
-        .hero {
-            text-align: center;
-            padding: 60px 20px;
-            margin-bottom: 60px;
+        /* --- EMBED --- */
+        .video-container { padding: 20px; margin-bottom: 80px; }
+        .video-wrapper { 
+            position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; 
         }
-
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            background: -webkit-linear-gradient(45deg, #2d3436, #636e72);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* --- EMBED SECTION --- */
-        .video-embed {
-            margin: 40px auto;
-            max-width: 800px;
-            padding: 20px;
-        }
-        .video-wrapper {
-            position: relative;
-            padding-bottom: 56.25%; /* 16:9 ratio */
-            height: 0;
-            overflow: hidden;
-            border-radius: 12px;
-        }
-        .video-wrapper iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: 0;
-        }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
         /* --- PRODUTOS --- */
-        .section-title {
-            text-align: center;
-            margin-bottom: 40px;
-            font-size: 2rem;
-            color: var(--primary);
+        .section-title { text-align: center; margin-bottom: 40px; font-size: 2rem; font-weight: 700; }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 80px; }
+        
+        .product-card { 
+            padding: 40px; 
+            display: flex; flex-direction: column; justify-content: space-between;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+        .product-card:hover { transform: scale(1.02); }
 
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-bottom: 80px;
-        }
+        .price { font-size: 1.8rem; font-weight: 700; margin: 20px 0; display: block; }
 
-        .product-card {
-            padding: 30px;
-            transition: transform 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .product-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .product-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .product-desc {
-            color: var(--text-light);
-            font-size: 0.95rem;
-            margin-bottom: 20px;
-        }
-
-        .price-tag {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--primary);
-            margin-bottom: 20px;
+        /* --- BOTÃO --- */
+        .btn-buy {
             display: block;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 12px 25px;
             background: var(--primary);
             color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s;
-            border: none;
-            width: 100%;
             text-align: center;
+            padding: 16px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: opacity 0.2s;
         }
-
-        .btn:hover {
-            background: #000;
-        }
+        .btn-buy:hover { opacity: 0.9; }
 
         /* --- FUNDADOR --- */
-        .founder-section {
-            display: flex;
-            align-items: center;
-            gap: 40px;
-            padding: 40px;
-            margin-bottom: 80px;
-            flex-wrap: wrap;
-        }
+        .founder-card { display: flex; align-items: center; gap: 30px; padding: 40px; margin-bottom: 100px; flex-wrap: wrap; }
+        .founder-img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; }
+        .founder-text { flex: 1; min-width: 250px; }
 
-        .founder-img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            background-color: #bdc3c7; /* Placeholder cinza */
-            object-fit: cover;
-            border: 4px solid rgba(255,255,255,0.8);
-        }
+        footer { text-align: center; padding-bottom: 50px; color: var(--accent); font-size: 0.9rem; }
 
-        .founder-info {
-            flex: 1;
-        }
-
-        /* --- MODAL DE PAGAMENTO --- */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(5px);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-
-        .modal {
-            padding: 40px;
-            max-width: 500px;
-            width: 90%;
-            text-align: center;
-            position: relative;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            cursor: pointer;
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-
-        .pix-area {
-            background: #fff;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 20px 0;
-            word-break: break-all;
-            font-family: monospace;
-            border: 1px dashed var(--accent);
-        }
-
-        footer {
-            text-align: center;
-            padding: 40px;
-            color: var(--text-light);
-            font-size: 0.9rem;
-            border-top: 1px solid rgba(0,0,0,0.05);
-        }
-
-        @media (max-width: 768px) {
-            .founder-section { text-align: center; justify-content: center; }
-            .hero h1 { font-size: 2rem; }
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 2.5rem; }
+            .founder-card { text-align: center; justify-content: center; }
         }
     </style>
 </head>
 <body>
 
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
+    <div class="bg-gradient"></div>
+    <div class="decorative-shape" style="top: -100px; right: -100px;"></div>
+    <div class="decorative-shape" style="bottom: -100px; left: -100px;"></div>
 
     <div class="container">
         <header>
-            <div class="logo">e-shop.</div>
-            <nav>
-                <a href="#founder" style="text-decoration: none; color: var(--primary); font-weight: 600;">Sobre</a>
-            </nav>
+            <div class="logo">e-shop</div>
         </header>
 
         <section class="hero glass">
-            <h1>Conhecimento Premium, Design Autêntico.</h1>
-            <p style="color: var(--text-light); font-size: 1.1rem;">Explore nossa coleção exclusiva de eBooks desenhados para elevar o seu potencial.</p>
+            <h1>Conhecimento em sua melhor forma.</h1>
+            <p>Ebooks exclusivos com design minimalista e conteúdo direto ao ponto.</p>
         </section>
 
-        <section class="video-embed glass">
+        <section class="video-container glass">
             <div class="video-wrapper">
-                <iframe id="video-frame" src="about:blank" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe id="main-video" src="" allowfullscreen></iframe>
             </div>
-            <p style="text-align: center; margin-top: 15px; font-size: 0.9rem; color: var(--text-light);">Veja uma introdução aos nossos materiais.</p>
         </section>
 
-        <h2 class="section-title">Os Produtos Disponíveis</h2>
-        <div id="products-container" class="products-grid">
+        <h2 class="section-title">Produtos Disponíveis</h2>
+        <div id="products-list" class="products-grid">
             </div>
 
         <h2 class="section-title">O Fundador</h2>
-        <section id="founder" class="founder-section glass">
-            <img src="https://placehold.co/150x150/bdc3c7/2d3436?text=Foto" alt="Fundador" class="founder-img" id="founder-img">
-            <div class="founder-info">
-                <h3 id="founder-name" style="margin-bottom: 10px; font-size: 1.5rem;">Nome do Fundador</h3>
-                <p id="founder-bio" style="color: var(--text-light);">
-                    Aqui vai uma breve biografia. Apaixonado por tecnologia e design, criei a e-shop para partilhar conhecimento de forma acessível e esteticamente agradável.
-                </p>
+        <section class="founder-card glass">
+            <img src="" id="founder-photo" class="founder-img" alt="Fundador">
+            <div class="founder-text">
+                <h3 id="founder-name">Nome do Fundador</h3>
+                <p id="founder-bio" style="margin-top: 10px; color: #444;"></p>
             </div>
         </section>
 
         <footer>
-            <p>&copy; 2024 e-shop. Todos os direitos reservados.</p>
+            <p>&copy; 2024 e-shop - Todos os direitos reservados.</p>
         </footer>
     </div>
 
-    <div class="modal-overlay" id="modal">
-        <div class="modal glass">
-            <span class="close-modal" onclick="closeModal()">X</span>
-            <h3>Finalizar Compra</h3>
-            <p style="margin-top: 10px;">Você escolheu: <strong id="selected-product"></strong></p>
-            
-            <p style="margin-top: 20px; font-size: 0.9rem;">Faça o pagamento via Pix:</p>
-            <div class="pix-area" id="pix-key-display">
-                </div>
-            <button class="btn" onclick="copyPix()">Copiar Chave Pix</button>
-        </div>
-    </div>
-
     <script>
-        /* ============================================================
-        [ ÁREA DE CONFIGURAÇÃO FÁCIL ]
-        Edite os valores abaixo para personalizar o seu site
-        ============================================================
+        /* =========================================
+           CONFIGURAÇÃO DO SITE (Mude aqui)
+           =========================================
         */
-        const config = {
-            // Dados da Chave Pix
-            chavePix: "11985797569", // Coloque sua chave aqui
-            
-            // Dados do Fundador
+        const CONFIG = {
+            videoId: "M7lc1UVf-VE", // ID do vídeo do YouTube
             fundador: {
                 nome: "Kaique Gonçalves",
-                bio: "Especialista em UI/UX e escrita técnica com mais de 5 anos de mercado. O objetivo destes eBooks é simplificar o complexo.",
-                fotoUrl: "https://placehold.co/150x150/bdc3c7/2d3436?text=Alex" // Coloque o link da sua foto real aqui
+                bio: "Especialista em produtos digitais, focado em entregar conteúdo de alta qualidade com uma experiência visual única.",
+                foto: "https://placehold.co/200x200/2d3436/ffffff?text=Alex"
             },
-
-            // Link do Vídeo (Embed do YouTube - use o ID do vídeo)
-            // Exemplo: para https://www.youtube.com/watch?v=dQw4w9WgXcQ, use o final "dQw4w9WgXcQ"
-            videoId: "M7lc1UVf-VE", 
-            
-            // Lista de Produtos
             produtos: [
                 {
-                    titulo: "Design Minimalista",
-                    descricao: "Aprenda a criar interfaces limpas e funcionais com este guia completo.",
+                    nome: "Mastering Design",
+                    desc: "O guia definitivo para criar interfaces profissionais.",
                     preco: "R$ 29,90",
-                    // Dados da Chave Pix
-            chavePix: "00020126360014BR.GOV.BCB.PIX0114+5511985797569520400005303986540529.905802BR5925Kaique Goncalves dos Sant6009SAO PAULO62140510k3M9yJr3Yd6304A7FF", // Coloque sua chave aqui
-            
-                    linkDownload: "#" // Link para entrega (opcional para integração futura)
+                    linkPagamento: "00020126580014BR.GOV.BCB.PIX01361322e714-df96-4f70-b07e-23997accd262520400005303986540529.905802BR5925Kaique Goncalves dos Sant6009SAO PAULO62140510dD0h3i04S66304AA1C"
                 },
                 {
-                    titulo: "Código Limpo",
-                    descricao: "As melhores práticas para escrever código legível e escalável.",
-                    preco: "R$ 49,90",
-                    linkDownload: "#"
-                },
-                {
-                    titulo: "Marketing para Devs",
-                    descricao: "Como vender os seus serviços e produtos na era digital.",
-                    preco: "R$ 39,90",
-                    linkDownload: "#"
+                    nome: "Código Limpo 2.0",
+                    desc: "Leve sua programação para o próximo nível.",
+                    preco: "R$ 29,90",
+                    linkPagamento: "00020126580014BR.GOV.BCB.PIX01361322e714-df96-4f70-b07e-23997accd262520400005303986540529.905802BR5925Kaique Goncalves dos Sant6009SAO PAULO62140510dD0h3i04S66304AA1C"
                 }
             ]
         };
 
-        /* ============================================================
-        [ LÓGICA DO SISTEMA ]
-        Não precisa mexer aqui a menos que queira mudar o comportamento
-        ============================================================
+        /* =========================================
+           LÓGICA DE INICIALIZAÇÃO
+           =========================================
         */
+        function init() {
+            // Configurar Vídeo
+            document.getElementById('main-video').src = `https://www.youtube.com/embed/${CONFIG.videoId}`;
+            
+            // Configurar Fundador
+            document.getElementById('founder-name').innerText = CONFIG.fundador.nome;
+            document.getElementById('founder-bio').innerText = CONFIG.fundador.bio;
+            document.getElementById('founder-photo').src = CONFIG.fundador.foto;
 
-        // 1. Inicializar Site
-        document.addEventListener('DOMContentLoaded', () => {
-            renderProducts();
-            renderFounder();
-            setupVideo();
-        });
-
-        // 2. Renderizar Produtos
-        function renderProducts() {
-            const container = document.getElementById('products-container');
-            let html = '';
-
-            config.produtos.forEach(produto => {
-                html += `
+            // Renderizar Produtos
+            const list = document.getElementById('products-list');
+            CONFIG.produtos.forEach(p => {
+                list.innerHTML += `
                     <div class="product-card glass">
                         <div>
-                            <h3 class="product-title">${produto.titulo}</h3>
-                            <p class="product-desc">${produto.descricao}</p>
+                            <h3>${p.nome}</h3>
+                            <p style="color: #666; margin-top: 10px;">${p.desc}</p>
                         </div>
                         <div>
-                            <span class="price-tag">${produto.preco}</span>
-                            <button class="btn" onclick="openModal('${produto.titulo}')">Comprar Agora</button>
+                            <span class="price">${p.preco}</span>
+                            <a href="${p.linkPagamento}" target="_blank" class="btn-buy">Comprar Agora</a>
                         </div>
                     </div>
                 `;
             });
-
-            container.innerHTML = html;
         }
 
-        // 3. Renderizar Fundador
-        function renderFounder() {
-            document.getElementById('founder-name').innerText = config.fundador.nome;
-            document.getElementById('founder-bio').innerText = config.fundador.bio;
-            document.getElementById('founder-img').src = config.fundador.fotoUrl;
-        }
-
-        // 4. Configurar Vídeo
-        function setupVideo() {
-            const iframe = document.getElementById('video-frame');
-            // Monta a URL de embed do YouTube
-            iframe.src = `https://www.youtube.com/embed/${config.videoId}?rel=0`;
-        }
-
-        // 5. Controle do Modal (Janela de Compra)
-        const modal = document.getElementById('modal');
-        const pixDisplay = document.getElementById('pix-key-display');
-        const productDisplay = document.getElementById('selected-product');
-
-        function openModal(productName) {
-            productDisplay.innerText = productName;
-            pixDisplay.innerText = config.chavePix;
-            modal.style.display = 'flex';
-        }
-
-        function closeModal() {
-            modal.style.display = 'none';
-        }
-
-        // Fechar se clicar fora do modal
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) closeModal();
-        });
-
-        // 6. Função de Copiar Pix
-        function copyPix() {
-            navigator.clipboard.writeText(config.chavePix).then(() => {
-                alert("Chave Pix copiada com sucesso!");
-            }).catch(err => {
-                console.error('Erro ao copiar', err);
-                alert("Erro ao copiar, tente selecionar manualmente.");
-            });
-        }
+        window.onload = init;
     </script>
 </body>
 </html>
