@@ -27,7 +27,6 @@
             min-height: 100vh;
         }
 
-        /* Fundo Dinâmico */
         .bg-gradient {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -59,7 +58,6 @@
         header { padding: 30px 0; display: flex; justify-content: space-between; align-items: center; }
         .logo { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.5px; }
 
-        /* Área de Sucesso */
         #success-area {
             display: none; 
             padding: 40px;
@@ -110,16 +108,22 @@
         }
         .btn-buy:hover { opacity: 0.8; transform: translateY(-2px); }
 
-        /* Estilo para o aviso do WhatsApp */
+        /* Estilo para o Link do WhatsApp */
         .whatsapp-notice {
             display: block;
             margin-top: 12px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--accent);
             text-align: center;
-            font-weight: 500;
+            font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .whatsapp-notice:hover {
+            color: var(--success);
+            text-decoration: underline;
         }
 
         .btn-success { background: var(--success); margin-top: 20px; display: inline-block; padding: 12px 40px; }
@@ -150,4 +154,122 @@
         <div id="success-area" class="glass">
             <h2 style="color: var(--success);">💳 Pagamento Confirmado!</h2>
             <p>O seu acesso foi liberado com sucesso. Clique abaixo para baixar:</p>
-            <a href="#" id="download-link" class="btn-buy btn-success">BAIXAR MEU EBOOK
+            <a href="#" id="download-link" class="btn-buy btn-success">BAIXAR MEU EBOOK (PDF)</a>
+        </div>
+
+        <section class="hero glass">
+            <h1>Conhecimento em sua melhor forma.</h1>
+            <p>Ebooks exclusivos com design minimalista e conteúdo direto ao ponto.</p>
+        </section>
+
+        <section class="video-container glass">
+            <div class="video-wrapper">
+                <iframe id="main-video" src="" allowfullscreen></iframe>
+            </div>
+        </section>
+
+        <h2 class="section-title">Produtos Disponíveis</h2>
+        <div id="products-list" class="products-grid"></div>
+
+        <h2 class="section-title">O Fundador</h2>
+        <section class="founder-card glass">
+            <img src="" id="founder-photo" class="founder-img" alt="Fundador">
+            <div class="founder-text">
+                <h3 id="founder-name">Carregando...</h3>
+                <p id="founder-bio" style="margin-top: 10px; color: #444;"></p>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2024 e-shop - Design & Conteúdo Premium.</p>
+        </footer>
+    </div>
+
+    <script>
+        /* ============================================================
+           [ ÁREA DE CONFIGURAÇÃO ]
+           ============================================================ */
+        const CONFIG = {
+            videoId: "M7lc1UVf-VE", 
+            linkDownloadGeral: "https://drive.google.com/file/d/1GmGbpWt63aQxiClkO-gGLgVjPXtPh7E0/view?usp=drivesdk",
+            
+            // INSIRA SEU NÚMERO ABAIXO (Apenas números: Código País + DDD + Número)
+            // Exemplo para Brasil: 5511999999999
+            whatsapp: "5511985797569", 
+
+            fundador: {
+                nome: "Kaique Gonçalves",
+                bio: `Kaique G. dos Santos | Atleta
+                Apaixonado por esportes e pelo movimento. 🏃‍♂️
+                Uso a minha experiência nos campos para te ajudar a viver com mais saúde e alta performance.
+                🚀 Disciplina não é sacrifício, é liberdade.
+                Saúde é o seu melhor investimento.`,
+                foto: "https://placehold.co/200x200/1a1a1a/ffffff?text=Kaique"
+            },
+
+            produtos: [
+                {
+                    nome: "O DESAFIO DOS 45 DIAS",
+                    desc: "Bem-vindo ao desafio que vai mudar a sua relação com o espelho. Desinflame o seu corpo e mude hábitos em 45 dias.",
+                    preco: "R$ 19,90",
+                    linkPagamento: "https://nubank.com.br/cobrar/1l85wg/697185d9-8867-41eb-9694-e763b35c3200" 
+                },
+                {
+                    nome: "Esporte Salva",
+                    desc: "O esporte salva vidas e transforma corpos. Como atleta, compartilho como o esporte pode ser seu maior aliado.",
+                    preco: "R$ 19,90",
+                    linkPagamento: "https://nubank.com.br/cobrar/1l85wg/697185d9-8867-41eb-9694-e763b35c3200"
+                }
+            ]
+        };
+
+        /* ============================================================
+           [ LÓGICA DO SISTEMA ]
+           ============================================================ */
+        function init() {
+            document.getElementById('main-video').src = `https://www.youtube.com/embed/${CONFIG.videoId}`;
+            document.getElementById('founder-name').innerText = CONFIG.fundador.nome;
+            document.getElementById('founder-bio').innerText = CONFIG.fundador.bio;
+            document.getElementById('founder-photo').src = CONFIG.fundador.foto;
+
+            const list = document.getElementById('products-list');
+            
+            list.innerHTML = CONFIG.produtos.map(p => {
+                // Prepara a mensagem do WhatsApp para cada produto
+                const mensagem = `Olá Kaique! Acabei de fazer o pagamento do ebook ${p.nome}. Segue o comprovante:`;
+                const linkWhats = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(mensagem)}`;
+
+                return `
+                <div class="product-card glass">
+                    <div>
+                        <h3>${p.nome}</h3>
+                        <p style="color: #666; margin-top: 10px; font-size: 0.9rem;">${p.desc}</p>
+                    </div>
+                    <div>
+                        <span class="price">${p.preco}</span>
+                        <a href="${p.linkPagamento}" target="_blank" class="btn-buy">Comprar Agora</a>
+                        <a href="${linkWhats}" target="_blank" class="whatsapp-notice">
+                           Após o pagamento enviar comprovante no whatsapp
+                        </a>
+                    </div>
+                </div>
+                `;
+            }).join('');
+
+            checkPaymentSuccess();
+        }
+
+        function checkPaymentSuccess() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('sucesso') === 'true') {
+                const areaSucesso = document.getElementById('success-area');
+                areaSucesso.style.display = 'block';
+                document.getElementById('download-link').href = CONFIG.linkDownloadGeral;
+                areaSucesso.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
