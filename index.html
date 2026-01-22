@@ -45,6 +45,7 @@
             opacity: 0.5;
         }
 
+        /* --- ESTILO VIDRO --- */
         .glass {
             background: var(--glass-bg);
             backdrop-filter: blur(var(--blur));
@@ -59,7 +60,7 @@
         header { padding: 30px 0; display: flex; justify-content: space-between; align-items: center; }
         .logo { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.5px; }
 
-        /* Área de Sucesso */
+        /* --- ÁREA DE SUCESSO (PÓS-PAGAMENTO) --- */
         #success-area {
             display: none; 
             padding: 40px;
@@ -74,15 +75,18 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* --- HERO --- */
         .hero { text-align: center; padding: 60px 20px; margin-bottom: 50px; }
         .hero h1 { font-size: 3rem; font-weight: 800; margin-bottom: 15px; letter-spacing: -2px; }
 
+        /* --- EMBED --- */
         .video-container { padding: 20px; margin-bottom: 80px; }
         .video-wrapper { 
             position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; 
         }
         .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
+        /* --- PRODUTOS --- */
         .section-title { text-align: center; margin-bottom: 40px; font-size: 2rem; font-weight: 700; }
         .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 80px; }
         
@@ -95,6 +99,7 @@
 
         .price { font-size: 1.8rem; font-weight: 700; margin: 20px 0; display: block; }
 
+        /* --- BOTÕES --- */
         .btn-buy {
             display: block;
             background: var(--primary);
@@ -111,9 +116,10 @@
         .btn-buy:hover { opacity: 0.8; transform: translateY(-2px); }
         .btn-success { background: var(--success); margin-top: 20px; display: inline-block; padding: 12px 40px; }
 
+        /* --- FUNDADOR --- */
         .founder-card { display: flex; align-items: center; gap: 30px; padding: 40px; margin-bottom: 100px; flex-wrap: wrap; }
         .founder-img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid white; }
-        .founder-text { flex: 1; min-width: 250px; white-space: pre-line; } /* pre-line respeita os saltos de linha */
+        .founder-text { flex: 1; min-width: 250px; white-space: pre-line; }
 
         footer { text-align: center; padding-bottom: 50px; color: var(--accent); font-size: 0.9rem; }
 
@@ -169,6 +175,9 @@
     </div>
 
     <script>
+        /* ============================================================
+           [ ÁREA DE CONFIGURAÇÃO ]
+           ============================================================ */
         const CONFIG = {
             videoId: "M7lc1UVf-VE", 
             linkDownloadGeral: "https://drive.google.com/file/d/1GmGbpWt63aQxiClkO-gGLgVjPXtPh7E0/view?usp=drivesdk",
@@ -186,29 +195,30 @@
             produtos: [
                 {
                     nome: "O DESAFIO DOS 45 DIAS",
-                    desc: "Bem-vindo ao desafio que vai mudar a sua relação com o espelho. Desinflame o seu corpo e mude hábitos.",
+                    desc: "Bem-vindo ao desafio que vai mudar a sua relação com o espelho. Desinflame o seu corpo e mude hábitos em 45 dias.",
                     preco: "R$ 19,90",
+                    // ABAIXO O LINK QUE FORNECESTE
                     linkPagamento: "https://nubank.com.br/cobrar/1l85wg/697185d9-8867-41eb-9694-e763b35c3200" 
-                }
+                },
                 {
                     nome: "Esporte Salva",
-                    desc: "O esporte salva vidas e transforma corpos. A disciplina do futebol como sua aliada.",
+                    desc: "O esporte salva vidas e transforma corpos. Como atleta, compartilho como o esporte pode ser seu maior aliado.",
                     preco: "R$ 19,90",
+                    // ABAIXO O LINK QUE FORNECESTE
                     linkPagamento: "https://nubank.com.br/cobrar/1l85wg/697185d9-8867-41eb-9694-e763b35c3200"
                 }
             ]
         };
 
+        /* ============================================================
+           [ LÓGICA DO SISTEMA ]
+           ============================================================ */
         function init() {
-            // Configurar Vídeo
             document.getElementById('main-video').src = `https://www.youtube.com/embed/${CONFIG.videoId}`;
-            
-            // Configurar Fundador
             document.getElementById('founder-name').innerText = CONFIG.fundador.nome;
             document.getElementById('founder-bio').innerText = CONFIG.fundador.bio;
             document.getElementById('founder-photo').src = CONFIG.fundador.foto;
 
-            // Renderizar Produtos
             const list = document.getElementById('products-list');
             list.innerHTML = CONFIG.produtos.map(p => `
                 <div class="product-card glass">
@@ -218,7 +228,7 @@
                     </div>
                     <div>
                         <span class="price">${p.preco}</span>
-                        <a href="${p.linkPagamento}" class="btn-buy">Comprar Agora</a>
+                        <a href="${p.linkPagamento}" target="_blank" class="btn-buy">Comprar Agora</a>
                     </div>
                 </div>
             `).join('');
