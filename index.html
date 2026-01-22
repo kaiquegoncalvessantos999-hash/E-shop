@@ -75,11 +75,15 @@
         .hero { text-align: center; padding: 60px 20px; margin-bottom: 50px; }
         .hero h1 { font-size: 3rem; font-weight: 800; margin-bottom: 15px; letter-spacing: -2px; }
 
-        .video-container { padding: 20px; margin-bottom: 80px; }
-        .video-wrapper { 
-            position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; 
+        /* Ajuste para o Contentor da Imagem */
+        .media-container { padding: 20px; margin-bottom: 80px; text-align: center; }
+        .main-img { 
+            width: 100%; 
+            max-width: 100%; 
+            border-radius: 12px; 
+            display: block;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
-        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
         .section-title { text-align: center; margin-bottom: 40px; font-size: 2rem; font-weight: 700; }
         .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 80px; }
@@ -108,7 +112,6 @@
         }
         .btn-buy:hover { opacity: 0.8; transform: translateY(-2px); }
 
-        /* Estilo para o Link do WhatsApp */
         .whatsapp-notice {
             display: block;
             margin-top: 12px;
@@ -162,10 +165,8 @@
             <p>Ebooks exclusivos com design minimalista e conteúdo direto ao ponto.</p>
         </section>
 
-        <section class="video-container glass">
-            <div class="video-wrapper">
-                <iframe id="main-video" src="" allowfullscreen></iframe>
-            </div>
+        <section class="media-container glass">
+            <img id="main-media" src="" class="main-img" alt="Destaque e-shop">
         </section>
 
         <h2 class="section-title">Produtos Disponíveis</h2>
@@ -190,11 +191,11 @@
            [ ÁREA DE CONFIGURAÇÃO ]
            ============================================================ */
         const CONFIG = {
-            videoId: "https://i.imgur.com/rOyQWBz.jpeg", 
+            // IMAGEM SUBSTITUÍDA AQUI
+            imagemDestaque: "https://i.imgur.com/rOyQWBz.jpeg", 
             linkDownloadGeral: "https://drive.google.com/file/d/1GmGbpWt63aQxiClkO-gGLgVjPXtPh7E0/view?usp=drivesdk",
             
-            // INSIRA SEU NÚMERO ABAIXO (Apenas números: Código País + DDD + Número)
-            // Exemplo para Brasil: 5511999999999
+            // NÃO TE ESQUEÇAS DE POR O TEU NÚMERO AQUI
             whatsapp: "5511985797569", 
 
             fundador: {
@@ -227,15 +228,17 @@
            [ LÓGICA DO SISTEMA ]
            ============================================================ */
         function init() {
-            document.getElementById('main-video').src = `https://www.youtube.com/embed/${CONFIG.videoId}`;
+            // Carregar a Imagem Principal
+            document.getElementById('main-media').src = CONFIG.imagemDestaque;
+            
+            // Configurar Fundador
             document.getElementById('founder-name').innerText = CONFIG.fundador.nome;
             document.getElementById('founder-bio').innerText = CONFIG.fundador.bio;
             document.getElementById('founder-photo').src = CONFIG.fundador.foto;
 
+            // Renderizar Produtos
             const list = document.getElementById('products-list');
-            
             list.innerHTML = CONFIG.produtos.map(p => {
-                // Prepara a mensagem do WhatsApp para cada produto
                 const mensagem = `Olá Kaique! Acabei de fazer o pagamento do ebook ${p.nome}. Segue o comprovante:`;
                 const linkWhats = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(mensagem)}`;
 
